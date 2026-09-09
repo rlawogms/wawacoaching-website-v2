@@ -263,6 +263,22 @@ body { font-family: 'Noto Sans KR', sans-serif; color: #1a1a1a; background: #fff
   </div>
 </section>
 
+<section class="section" id="facility">
+  <div class="section-head">
+    <div class="section-title">학원 시설 안내</div>
+    <div class="section-sub">쾌적하고 집중하기 좋은 학습 환경을 갖추고 있습니다</div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:8px;">
+    <img loading="lazy" src="classroom1.jpg" alt="3층 교실" style="width:100%;border-radius:12px;object-fit:cover;height:220px;">
+    <img loading="lazy" src="classroom2.jpg" alt="자습실" style="width:100%;border-radius:12px;object-fit:cover;height:220px;">
+    <img loading="lazy" src="classroom3.jpg" alt="교실" style="width:100%;border-radius:12px;object-fit:cover;height:220px;">
+    <img loading="lazy" src="hallway.jpg" alt="복도" style="width:100%;border-radius:12px;object-fit:cover;height:220px;">
+  </div>
+  <div style="text-align:center;margin-top:24px;">
+    <a href="class-status.html" style="display:inline-flex;align-items:center;gap:6px;color:#0E6659;font-weight:700;font-size:14px;text-decoration:none;border-bottom:2px solid #F0A93B;padding-bottom:3px;">수업 현황 더 보기 <i class="ti ti-arrow-right"></i></a>
+  </div>
+</section>
+
 <section class="section" id="finder">
   <div class="finder-box">
     <h2>가까운 와와코칭 지점을 찾아보세요</h2>
@@ -416,6 +432,8 @@ body { font-family: 'Noto Sans KR', sans-serif; color: #1a1a1a; background: #fff
 var SITE_SEARCH_INDEX = [
   { title: '4가지 코칭 시스템', desc: '계획·실행·점검·보완의 4C 코칭으로 학습 습관을 만듭니다', url: '#system', kw: '코칭 시스템 4C 계획 실행 점검 보완' },
   { title: '소개 영상', desc: '와와코칭을 소개하는 영상', url: '#video', kw: '영상 소개 유튜브' },
+  { title: '학원 시설 안내', desc: '쾌적하고 집중하기 좋은 학습 환경', url: '#facility', kw: '시설 교실 자습실 사진' },
+  { title: '학원 수업 현황', desc: '실제 교실·자습실 사진으로 보는 수업 현황', url: 'class-status.html', kw: '수업 현황 교실 사진' },
   { title: '지점 찾기', desc: '전국 200여개 와와학습코칭센터 지점 확인', url: 'center-finder.html', kw: '지점 찾기 센터 위치 지도' },
   { title: '수강료 안내', desc: '초등반·중등반·고등반 수강료 확인 (서울/서울 이외 지역)', url: 'pricing.html', kw: '수강료 비용 가격표 가격 서울 지역' },
   { title: '방문·화상 수업 안내', desc: '센터가 멀 때는 선생님이 방문하거나 화상으로 코칭을 진행합니다', url: 'visit-class.html', kw: '방문 수업 화상 수업 방문과외 화상과외' },
