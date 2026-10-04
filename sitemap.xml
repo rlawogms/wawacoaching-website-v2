@@ -1464,4 +1464,10 @@
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
+  <url>
+    <loc>https://wawa-coaching.co.kr/news/%EC%88%98%EC%8B%9C%EA%B2%BD%EC%9F%81%EB%A5%A0-%EC%97%AD%EB%8C%80%EC%B5%9C%EA%B3%A0-%EC%BD%94%EC%B9%AD%EC%A0%90%EA%B2%80.html</loc>
+    <lastmod>2026-10-04</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
 </urlset>
