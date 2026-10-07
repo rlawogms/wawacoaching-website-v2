@@ -189,6 +189,59 @@ body { font-family: 'Noto Sans KR', sans-serif; color: #1a1a1a; background: #fff
   #tuitionGrid { grid-template-columns: 1fr; }
   .footer { padding: 32px 20px; }
 }
+
+.wm-backdrop {
+  display: none; position: fixed; inset: 0; background: rgba(10,38,32,0.55); z-index: 2000;
+  align-items: center; justify-content: center; padding: 20px;
+}
+.wm-backdrop.show { display: flex; }
+.wm-modal {
+  background: #fff; border-radius: 20px; width: 100%; max-width: 420px; max-height: 88vh; overflow-y: auto;
+  padding: 28px 24px; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.wm-close {
+  position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 22px;
+  color: #999; cursor: pointer; padding: 4px; line-height: 1;
+}
+.wm-back {
+  background: none; border: none; color: #0E6659; font-size: 13.5px; font-weight: 700; cursor: pointer;
+  padding: 0; margin-bottom: 10px; display: flex; align-items: center; gap: 4px; font-family: 'Noto Sans KR', sans-serif;
+}
+.wm-title { font-size: 19px; font-weight: 800; color: #1a1a1a; margin-bottom: 8px; }
+.wm-sub { font-size: 13.5px; color: #777; line-height: 1.6; margin-bottom: 20px; }
+.wm-subject-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.wm-subject-card {
+  background: #FBF6E8; border: 1.5px solid #ECE0BE; border-radius: 14px; padding: 20px 12px;
+  display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer;
+  font-family: 'Noto Sans KR', sans-serif; font-size: 14px; font-weight: 700; color: #1a1a1a;
+  transition: border-color 0.15s, background 0.15s;
+}
+.wm-subject-card:hover { border-color: #F0A93B; background: #FBEED1; }
+.wm-subject-card i { font-size: 24px; color: #0E6659; }
+.wm-grade-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.wm-grade-chip {
+  padding: 9px 14px; border-radius: 20px; border: 1.5px solid #DCE8E4; background: #fff; color: #444;
+  font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'Noto Sans KR', sans-serif;
+}
+.wm-grade-chip.active { background: #0E6659; border-color: #0E6659; color: #fff; }
+.wm-note { background: #E8F5EE; color: #0E6659; font-size: 12.5px; padding: 10px 12px; border-radius: 8px; margin-bottom: 18px; line-height: 1.6; }
+.wm-field-label { font-size: 13px; font-weight: 700; color: #1a1a1a; margin: 14px 0 8px; }
+.wm-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.wm-modal input, .wm-modal select {
+  width: 100%; padding: 13px 14px; border-radius: 8px; border: 1.5px solid #ddd;
+  background: #fff; color: #1a1a1a; font-size: 13.5px; font-family: 'Noto Sans KR', sans-serif; outline: none; margin-bottom: 10px;
+}
+.wm-modal input:focus, .wm-modal select:focus { border-color: #0E6659; }
+.wm-submit {
+  width: 100%; background: #F0A93B; color: #0A4D43; border: none; padding: 15px; border-radius: 10px;
+  font-size: 15px; font-weight: 800; cursor: pointer; font-family: 'Noto Sans KR', sans-serif; margin-top: 6px;
+}
+.wm-submit:hover { background: #d9962f; }
+.wm-submit:disabled { opacity: 0.6; cursor: default; }
+@media (max-width: 420px) {
+  .wm-modal { padding: 24px 18px; }
+  .wm-row2 { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
@@ -490,6 +543,330 @@ document.addEventListener('click', function(e) {
     document.getElementById('siteSearchResults').classList.remove('show');
   }
 });
+</script>
+<div class="wm-backdrop" id="wmBackdrop" onclick="if(event.target===this) wmClose();">
+  <div class="wm-modal">
+    <button class="wm-close" onclick="wmClose()" aria-label="닫기">&times;</button>
+
+    <div id="wmStep1">
+      <div class="wm-title">어떤 도움이 필요하세요?</div>
+      <div class="wm-sub">과목만 고르시면 맞는 선생님을 찾아 연락드립니다</div>
+      <div class="wm-subject-grid">
+        <div class="wm-subject-card" onclick="wmSelectSubject('국어')"><i class="ti ti-book"></i>국어 코칭</div>
+        <div class="wm-subject-card" onclick="wmSelectSubject('수학')"><i class="ti ti-ruler-2"></i>수학 코칭</div>
+        <div class="wm-subject-card" onclick="wmSelectSubject('영어')"><i class="ti ti-abc"></i>영어 코칭</div>
+        <div class="wm-subject-card" onclick="wmSelectSubject('전 과목')"><i class="ti ti-target-arrow"></i>학년별 맞춤 추천</div>
+      </div>
+    </div>
+
+    <div id="wmStep2" style="display:none;">
+      <button class="wm-back" onclick="wmBack()"><i class="ti ti-arrow-left"></i> 다시 고르기</button>
+      <div class="wm-title" id="wmStep2Title">수학 코칭</div>
+      <div class="wm-sub">학년을 선택하시면 꼭 맞는 선생님을 연결해드립니다</div>
+      <div class="wm-field-label">학년</div>
+      <div class="wm-grade-grid" id="wmGradeGrid">
+        <div class="wm-grade-chip" data-v="초등 1~3학년">초등 1~3학년</div>
+        <div class="wm-grade-chip" data-v="초등 4~6학년">초등 4~6학년</div>
+        <div class="wm-grade-chip" data-v="중학교 1학년">중1</div>
+        <div class="wm-grade-chip" data-v="중학교 2학년">중2</div>
+        <div class="wm-grade-chip" data-v="중학교 3학년">중3</div>
+        <div class="wm-grade-chip" data-v="고등학교 1학년">고1</div>
+        <div class="wm-grade-chip" data-v="고등학교 2학년">고2</div>
+        <div class="wm-grade-chip" data-v="고등학교 3학년">고3</div>
+      </div>
+      <div class="wm-note">💬 방문 또는 화상 수업 모두 가능하며, 상담을 통해 가장 편한 방식으로 안내해드립니다.</div>
+
+      <form id="wmForm">
+        <div class="wm-field-label">연락처</div>
+        <div class="wm-row2">
+          <input type="text" id="wmName" placeholder="예: 김민준" required />
+          <input type="tel" id="wmPhone" placeholder="010-0000-0000" required />
+        </div>
+        <select id="wmRegion" required>
+          <option value="" disabled selected>지역 선택</option>
+          <optgroup label="서울">
+            <option>서울 강동구 명일동</option>
+            <option>서울 강북구 미아동</option>
+            <option>서울 강서구 마곡동</option>
+            <option>서울 광진구 구의동</option>
+            <option>서울 구로구 신도림동</option>
+            <option>서울 금천구 시흥동</option>
+            <option>서울 노원구 하계동</option>
+            <option>서울 동대문구 제기동</option>
+            <option>서울 마포구</option>
+            <option>서울 서대문구 남가좌동</option>
+            <option>서울 성북구</option>
+            <option>서울 송파구 장지동</option>
+            <option>서울 양천구 신정동</option>
+            <option>서울 영등포구 당산동</option>
+            <option>서울 은평구</option>
+          </optgroup>
+          <optgroup label="인천">
+            <option>인천 남동구</option>
+            <option>인천 부평구</option>
+            <option>인천 서해구</option>
+            <option>인천 연수구</option>
+          </optgroup>
+          <optgroup label="경기">
+            <option>경기 고양 덕양구</option>
+            <option>경기 고양 일산동구</option>
+            <option>경기 고양 일산서구</option>
+            <option>경기 광명</option>
+            <option>경기 광주 탄벌동</option>
+            <option>경기 구리</option>
+            <option>경기 군포 산본동</option>
+            <option>경기 김포</option>
+            <option>경기 남양주</option>
+            <option>경기 부천 소사구</option>
+            <option>경기 부천 원미구</option>
+            <option>경기 성남 분당구</option>
+            <option>경기 성남 수정구</option>
+            <option>경기 성남 중원구</option>
+            <option>경기 수원 권선구</option>
+            <option>경기 수원 영통구</option>
+            <option>경기 수원 장안구 천천동</option>
+            <option>경기 시흥</option>
+            <option>경기 안양 동안구 비산동</option>
+            <option>경기 양주 옥정동</option>
+            <option>경기 오산</option>
+            <option>경기 용인 기흥구</option>
+            <option>경기 용인 수지구</option>
+            <option>경기 용인 처인구 역북동</option>
+            <option>경기 의정부 신곡동</option>
+            <option>경기 이천</option>
+            <option>경기 파주</option>
+            <option>경기 평택</option>
+            <option>경기 하남</option>
+            <option>경기 화성 동탄구</option>
+            <option>경기 화성 만세구 향남읍</option>
+            <option>경기 화성 병점구</option>
+            <option>경기 화성 효행구 봉담읍</option>
+          </optgroup>
+          <optgroup label="대전">
+            <option>대전 대덕구 송촌동</option>
+            <option>대전 서구</option>
+            <option>대전 유성구</option>
+            <option>대전 중구 태평동</option>
+          </optgroup>
+          <optgroup label="대구">
+            <option>대구 달서구</option>
+            <option>대구 동구</option>
+            <option>대구 북구</option>
+            <option>대구 수성구</option>
+            <option>대구 중구</option>
+          </optgroup>
+          <optgroup label="울산">
+            <option>울산 남구 삼산동</option>
+            <option>울산 북구 송정동</option>
+            <option>울산 중구</option>
+          </optgroup>
+          <optgroup label="부산">
+            <option>부산 동래구</option>
+            <option>부산 북구 화명동</option>
+            <option>부산 해운대구</option>
+          </optgroup>
+          <optgroup label="전남광주">
+            <option>전남광주 광산구</option>
+            <option>전남광주 남구 진월동</option>
+            <option>전남광주 서구 치평동</option>
+          </optgroup>
+          <optgroup label="충남">
+            <option>충남 당진 읍내동</option>
+            <option>세종 새롬동</option>
+            <option>충남 아산 탕정면</option>
+            <option>충남 천안 서북구</option>
+            <option>충남 천안 동남구 신방동</option>
+          </optgroup>
+          <optgroup label="충북">
+            <option>충북 청주 서원구</option>
+            <option>충북 청주 흥덕구</option>
+            <option>충북 충주</option>
+          </optgroup>
+          <optgroup label="전북">
+            <option>전북 전주 덕진구 송천동</option>
+            <option>전북 전주 완산구 서신동</option>
+            <option>전북 완주 이서면</option>
+          </optgroup>
+          <optgroup label="경북">
+            <option>경북 경산</option>
+            <option>경북 구미 옥계동</option>
+            <option>경북 포항 북구</option>
+          </optgroup>
+          <optgroup label="경남">
+            <option>경남 거제 수월동</option>
+            <option>경남 창원</option>
+          </optgroup>
+          <optgroup label="강원">
+            <option>강원 강릉 교동</option>
+            <option>강원 원주</option>
+            <option>강원 춘천 후평동</option>
+          </optgroup>
+          <option>제주 노형동</option>
+        </select>
+        <select id="wmDong" style="display:none;">
+          <option value="" disabled selected>동 선택</option>
+        </select>
+        <input type="text" id="wmAddr" placeholder="예: 서울 강남구 테헤란로 123 (도로명 주소)" required />
+        <button type="submit" class="wm-submit" id="wmSubmitBtn">📞 상담 신청하기</button>
+      </form>
+      <div id="wmResult" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  var WM_WEB3FORMS_KEY = "d7779dc6-fc3a-4903-93f8-280aa163bd06";
+  var wmSubject = '';
+
+  var wmDongData = {
+    '서울 마포구': ['염리동', '용강동', '상암동'],
+    '서울 성북구': ['종암동', '돈암동', '동소문동'],
+    '서울 은평구': ['역촌동', '진관동'],
+    '인천 남동구': ['구월동', '논현동'],
+    '인천 부평구': ['부평동', '삼산동'],
+    '인천 서해구': ['청라동', '신현동'],
+    '인천 연수구': ['송도동', '동춘동'],
+    '대전 서구': ['관저동', '도안동', '둔산동'],
+    '대전 유성구': ['관평동', '지족동'],
+    '대구 달서구': ['월성동', '이곡동', '장기동', '유천동'],
+    '대구 동구': ['봉무동', '율하동'],
+    '대구 북구': ['국우동', '동천동', '복현동', '침산동'],
+    '대구 수성구': ['수성동2가', '만촌동'],
+    '대구 중구': ['봉산동', '수창동'],
+    '울산 중구': ['남외동', '복산동'],
+    '부산 동래구': ['사직동', '온천동'],
+    '부산 해운대구': ['반여동', '좌동'],
+    '전남광주 광산구': ['선암동', '수완동', '신창동', '월계동'],
+    '충남 천안 서북구': ['두정동', '불당동', '쌍용동'],
+    '충북 청주 서원구': ['개신동', '산남동'],
+    '충북 청주 흥덕구': ['가경동', '복대동'],
+    '충북 충주': ['칠금동', '호암동'],
+    '경북 경산': ['사동', '정평동'],
+    '경북 포항 북구': ['두호동', '양덕동'],
+    '경남 창원': ['상남동', '석동'],
+    '강원 원주': ['단구동', '반곡동', '무실동'],
+    '경기 고양 덕양구': ['성사동', '신원동', '원흥동', '행신동', '화정동'],
+    '경기 고양 일산동구': ['일산동', '중산동', '장항동', '풍동'],
+    '경기 고양 일산서구': ['덕이동', '주엽동', '탄현동'],
+    '경기 광명': ['광명동', '소하동', '철산동'],
+    '경기 구리': ['갈매동', '인창동'],
+    '경기 김포': ['북변동', '운양동', '장기동'],
+    '경기 남양주': ['별내동', '호평동', '진접읍', '퇴계원읍', '다산동', '평내동'],
+    '경기 부천 소사구': ['소사본동', '옥길동'],
+    '경기 부천 원미구': ['중동', '상동'],
+    '경기 성남 분당구': ['이매동', '금곡동'],
+    '경기 성남 수정구': ['창곡동', '단대동'],
+    '경기 성남 중원구': ['여수동', '성남동'],
+    '경기 수원 권선구': ['금곡동', '호매실동'],
+    '경기 수원 영통구': ['망포동', '영통동', '매탄동'],
+    '경기 시흥': ['장곡동', '대야동', '배곧동', '조남동'],
+    '경기 오산': ['오산동', '수청동', '금암동'],
+    '경기 용인 기흥구': ['구갈동', '중동', '영덕동', '보라동'],
+    '경기 용인 수지구': ['풍덕천동', '상현동', '신봉동'],
+    '경기 이천': ['갈산동', '부발읍'],
+    '경기 파주': ['와동동', '동패동', '금촌동', '목동동'],
+    '경기 평택': ['비전동', '이충동'],
+    '경기 하남': ['풍산동', '덕풍동', '망월동'],
+    '경기 화성 동탄구': ['목동', '산척동', '반송동', '영천동'],
+    '경기 화성 병점구': ['병점동', '진안동']
+  };
+
+  window.wmSelectSubject = function(subject) {
+    wmSubject = subject;
+    document.getElementById('wmStep2Title').textContent = subject === '전 과목' ? '학년별 맞춤 추천' : subject + ' 코칭';
+    document.getElementById('wmStep1').style.display = 'none';
+    document.getElementById('wmStep2').style.display = 'block';
+  };
+  window.wmBack = function() {
+    document.getElementById('wmStep2').style.display = 'none';
+    document.getElementById('wmStep1').style.display = 'block';
+  };
+  window.wmClose = function() {
+    document.getElementById('wmBackdrop').classList.remove('show');
+  };
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var gradeChips = document.querySelectorAll('.wm-grade-chip');
+    var selectedGrade = '';
+    gradeChips.forEach(function(chip) {
+      chip.addEventListener('click', function() {
+        gradeChips.forEach(function(c) { c.classList.remove('active'); });
+        chip.classList.add('active');
+        selectedGrade = chip.dataset.v;
+      });
+    });
+
+    var regionSelect = document.getElementById('wmRegion');
+    var dongSelect = document.getElementById('wmDong');
+    regionSelect.addEventListener('change', function() {
+      var dongs = wmDongData[regionSelect.value] || [];
+      dongSelect.innerHTML = '<option value="" disabled selected>동 선택</option>';
+      if (dongs.length > 0) {
+        dongs.forEach(function(d) {
+          var opt = document.createElement('option');
+          opt.textContent = d;
+          dongSelect.appendChild(opt);
+        });
+        dongSelect.style.display = '';
+      } else {
+        dongSelect.style.display = 'none';
+      }
+    });
+
+    document.getElementById('wmForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (!selectedGrade) { alert('학년을 선택해주세요.'); return; }
+      var btn = document.getElementById('wmSubmitBtn');
+      var orig = btn.innerHTML;
+      btn.innerHTML = '전송 중...'; btn.disabled = true;
+
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          access_key: WM_WEB3FORMS_KEY,
+          _template: 'table',
+          from_name: '와와코칭 방문 팝업 상담 신청',
+          subject: '[와와코칭] 📋 방문 팝업 상담 신청이 접수됐습니다',
+          '학생 이름': document.getElementById('wmName').value,
+          '학부모 연락처': document.getElementById('wmPhone').value,
+          '학년': selectedGrade,
+          '관심 과목': wmSubject,
+          '지역': regionSelect.value + (dongSelect.value ? ' ' + dongSelect.value : ''),
+          '도로명 주소': document.getElementById('wmAddr').value,
+          '신청 시각': new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }),
+          '신청 경로': 'wawa-coaching.co.kr (방문 팝업)'
+        })
+      }).then(function(r) { return r.json(); }).then(function(res) {
+        if (res.success) {
+          document.getElementById('wmForm').style.display = 'none';
+          var d = document.getElementById('wmResult');
+          d.innerHTML = '<div style="text-align:center;padding:24px 10px;background:#e8f5ee;border-radius:12px;color:#0E6659;">' +
+            '<div style="font-size:26px;margin-bottom:10px;">✅</div>' +
+            '<strong style="font-size:16px;">상담 신청이 접수됐습니다!</strong>' +
+            '<p style="margin-top:8px;font-size:13.5px;color:#444;">담당 코치가 3시간 이내 연락드립니다.</p></div>';
+          d.style.display = 'block';
+        } else {
+          btn.innerHTML = orig; btn.disabled = false;
+          alert('전송에 실패했습니다. 직접 전화해 주세요: 010-8411-7380');
+        }
+      }).catch(function() {
+        btn.innerHTML = orig; btn.disabled = false;
+        alert('전송에 실패했습니다. 직접 전화해 주세요: 010-8411-7380');
+      });
+    });
+
+    try {
+      if (!sessionStorage.getItem('wmShown')) {
+        sessionStorage.setItem('wmShown', '1');
+        setTimeout(function() {
+          document.getElementById('wmBackdrop').classList.add('show');
+        }, 1200);
+      }
+    } catch (e) {}
+  });
+})();
 </script>
 </body>
 </html>
