@@ -582,6 +582,7 @@ document.addEventListener('click', function(e) {
           <input type="text" id="wmName" placeholder="예: 김민준" required />
           <input type="tel" id="wmPhone" placeholder="010-0000-0000" required />
         </div>
+        <input type="text" id="wmSchool" placeholder="학교명 (예: OO초등학교)" required />
         <select id="wmRegion" required>
           <option value="" disabled selected>지역 선택</option>
           <optgroup label="서울">
@@ -831,6 +832,7 @@ document.addEventListener('click', function(e) {
           subject: '[와와코칭] 📋 방문 팝업 상담 신청이 접수됐습니다',
           '학생 이름': document.getElementById('wmName').value,
           '학부모 연락처': document.getElementById('wmPhone').value,
+          '학교명': document.getElementById('wmSchool').value,
           '학년': selectedGrade,
           '관심 과목': wmSubject,
           '지역': regionSelect.value + (dongSelect.value ? ' ' + dongSelect.value : ''),
