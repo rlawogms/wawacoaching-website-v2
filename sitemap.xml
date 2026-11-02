@@ -1548,4 +1548,16 @@
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
+  <url>
+    <loc>https://wawa-coaching.co.kr/centers/%EA%B3%A0%EC%9E%94%EC%A0%90.html</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://wawa-coaching.co.kr/centers/%EC%84%9D%EC%82%AC2%ED%98%B8%EC%A0%90.html</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
 </urlset>
