@@ -1566,4 +1566,10 @@
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
+  <url>
+    <loc>https://wawa-coaching.co.kr/news/%EC%88%98%EB%8A%A5-%EC%8B%9C%ED%97%98%EC%9E%A5%EB%82%A0%EC%A8%A8%EC%A0%95%EB%B3%B4-%EC%BD%94%EC%B9%AD%EC%A0%90%EA%B2%80.html</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
 </urlset>
