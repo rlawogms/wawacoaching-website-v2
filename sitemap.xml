@@ -1584,4 +1584,16 @@
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
+  <url>
+    <loc>https://wawa-coaching.co.kr/news/%EC%88%98%EB%8A%A5-%EC%B4%9D%ED%8F%89-%EC%BD%94%EC%B9%AD%EC%A0%90%EA%B2%80.html</loc>
+    <lastmod>2026-11-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://wawa-coaching.co.kr/news/%EC%A0%95%EC%8B%9C%ED%95%A9%EA%B2%A9%EC%84%A0-%EC%98%88%EC%B8%A1-%EC%BD%94%EC%B9%AD%EC%A0%90%EA%B2%80.html</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
 </urlset>
